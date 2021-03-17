@@ -1,0 +1,9 @@
+[submodule "tests/cpptests/include/CppUtilities"]
+	path = tests/cpptests/include/CppUtilities
+	url = git@github.com:snhobbs/CppUtilities.git
+[submodule "tests/cpptests/include/CMakeStaticAnalysis"]
+	path = tests/cpptests/CMakeStaticAnalysis
+	url = git@github.com:snhobbs/CMakeStaticAnalysis.git
+[submodule "tests/cpptests/ModbusRegisterMapping"]
+	path = tests/cpptests/ModbusRegisterMapping
+	url = git@github.com:snhobbs/ModbusRegisterMapping.git
