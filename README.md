@@ -1,4 +1,7 @@
-# Data Stores 
+# Data Stores
+
+# DEPRECATED
+- The same functionality with extended feature set can be had using Flatbuffers with a wrapper
 
 ## Purpose
 - Allow for data to be indexed and serialized by offset for use by offset protocols like Modbus.
