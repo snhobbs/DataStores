@@ -4,3 +4,5 @@ cmake_install.cmake
 CMakeFiles
 
 Makefile
+__pycache__
+data_stores.egg-info/
