@@ -10,8 +10,8 @@
 #include <DataStores/DataStores.h>
 #include <Utilities/TypeConversion.h>
 #include <ArrayView/ArrayView.h>
+#include <peripheral/Serializer.h>
 #include <algorithm>
-#include <array>
 #include <cstdint>
 
 struct {{ name }} {
@@ -58,18 +58,10 @@ class {{ name }}Wrapper {
       }
       {%- for entry in entries %}
       case({{name}}EntryIdentifier::{{ entry.name }}) : {
-      {% if entry.dtype.name in ['int8_t', 'uint8_t', 'kString'] %}
       {% if entry.length > 1 %}
-        for (std::size_t i = 0; i < std::min(sizeof(data_bank_->{{ entry.name }}), size); i++) {
-          data_bank_->{{ entry.name }}[i] = data[i];
-        }
+        read_as_type(data, size, data_bank_->{{ entry.name }}, sizeof(data_bank_->{{ entry.name }}));
       {% else %}
-          data_bank_->{{ entry.name }} = data[0];
-      {% endif %}
-
-      {% else %}
-        const auto value = Utilities::Make_MSB_IntegerTypeFromArray<{{ entry.dtype_ctype }}, uint8_t>(data, size);
-        data_bank_->{{ entry.name }} = value;
+        read_as_type(data, size, &data_bank_->{{ entry.name }}, 1);
       {% endif %}
         break;
       }
@@ -88,20 +80,10 @@ class {{ name }}Wrapper {
       }
       {%- for entry in entries %}
       case({{name}}EntryIdentifier::{{ entry.name }}) : {
-      {% if entry.dtype.name in ['int8_t', 'uint8_t', 'kString'] %}
       {% if entry.length > 1 %}
-        for (std::size_t i = 0; i < std::min(sizeof(data_bank_->{{ entry.name }}), size); i++) {
-          data[i] = data_bank_->{{ entry.name }}[i];
-        }
+        write_as_type(data, size, data_bank_->{{ entry.name }}, sizeof(data_bank_->{{ entry.name }}));
       {% else %}
-          data[0] = data_bank_->{{ entry.name }};
-      {% endif %}
-      {% else %}
-        const auto value = data_bank_->{{ entry.name }};
-        const auto array = Utilities::MakeMSBU8Array<{{ entry.dtype_ctype }}>(value);
-        for (std::size_t i = 0; i < std::min(array.size(), size); i++) {
-          data[i] = array.at(i);
-        }
+        write_as_type(data, size, &data_bank_->{{ entry.name }}, 1);
       {% endif %}
         break;
       }
